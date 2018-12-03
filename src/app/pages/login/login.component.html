@@ -1,0 +1,105 @@
+<section class="hero is-success is-fullheight">
+    <div class="hero-body">
+        <div class="container has-text-centered">
+            <div style="margin-bottom: -4em;">
+                <img src="/assets/images/logo.png" />
+            </div>
+
+            <div class="column is-4 is-offset-4">
+                <div class="box">
+                    <form (ngSubmit)="login()">
+                        <div class="field">
+                            <div class="control">
+                                <input class="input is-large" type="email" placeholder="Email" [(ngModel)]="email" name="email" autofocus>
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <div class="control">
+                                <input class="input is-large" type="password" placeholder="Senha" [(ngModel)]="password" name="password">
+                            </div>
+                        </div>
+
+                        <button class="button is-block is-primary is-large is-fullwidth"
+                            [ngClass]="{'is-loading': carregando}" [disabled]="carregando">Login</button>
+                    </form>
+                </div>
+                <p class="has-text-grey">
+                    <a (click)="toggleModal()">Cadastrar-se</a> <!--&nbsp;·&nbsp;-->
+                    <!--<a href="../">Esqueci a senha</a>-->
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="modal" [ngClass]="{'is-active': modal}">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+        <header class="modal-card-head">
+            <p class="modal-card-title">Cadastro</p>
+            <button type="button" class="delete" aria-label="close" (click)="toggleModal()" [disabled]="carregando"></button>
+        </header>
+
+        <form [formGroup]="form" (ngSubmit)="cadastrarUsuario()" novalidate>
+            <section class="modal-card-body">
+                <div class="field">
+                    <label class="label">Nome</label>
+                    <div class="control">
+                        <input class="input" type="text" maxlength="120" [(ngModel)]="usuario.nome" formControlName="nome">
+                    </div>
+                    <p class="help is-danger" 
+                        *ngIf="form.controls.nome.invalid && (form.controls.nome.dirty || form.controls.nome.touched)">
+                        Nome inválido
+                    </p>
+                </div>
+
+                <div class="field">
+                    <label class="label">Email</label>
+                    <div class="control">
+                        <input class="input" type="email" maxlength="120" [(ngModel)]="usuario.email" formControlName="email">
+                    </div>
+
+                    <p class="help is-danger" 
+                        *ngIf="form.controls.email.invalid && (form.controls.email.dirty || form.controls.email.touched)">
+                        Nome inválido
+                    </p>
+                </div>
+
+                <div class="field">
+                    <label class="label">Senha</label>
+                    <div class="control">
+                        <input class="input" type="password" maxlength="60" [(ngModel)]="usuario.password" formControlName="password">
+                    </div>
+
+                    <p class="help is-danger" 
+                        *ngIf="form.controls.password.invalid && (form.controls.password.dirty || form.controls.password.touched)">
+                        Senha muito pequena(Mínimo 8 caracteres)
+                    </p>
+                </div>
+
+                <div class="field">
+                    <label class="label">Horas de trabalho</label>
+                    <div class="control">
+                        <div class="select">
+                            <select [(ngModel)]="usuario.tempo_jornada" formControlName="tempo_jornada">
+                                <option value="6">6</option>
+                                <option value="8">8</option>
+                                <option value="9">9</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <p class="help is-danger" 
+                        *ngIf="form.controls.tempo_jornada.invalid && (form.controls.tempo_jornada.dirty || form.controls.tempo_jornada.touched)">
+                        Selecione a quantidade de horas
+                    </p>
+                </div>
+            </section>
+            <footer class="modal-card-foot">
+                <button class="button is-success" [disabled]="carregando" [ngClass]="{'is-loading': carregando}">Salvar</button>
+                <button class="button" type="button" (click)="toggleModal()" [disabled]="carregando">Fechar</button>
+            </footer>
+        </form>
+    </div>
+</div>

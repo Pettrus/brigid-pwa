@@ -1,0 +1,136 @@
+<nav class="navbar" role="navigation" aria-label="main navigation">
+    <div class="container">
+        <div class="navbar-brand">
+            <a class="navbar-item">
+                <img src="/assets/images/navbar-logo.png">
+                <span style="margin-left: 8px;font-size: 1.75em;">Brigid</span>
+            </a>
+    
+            <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample"
+                (click)="toggleMenu()">
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+            </a>
+        </div>
+    
+        <div id="navbarBasicExample" class="navbar-menu" [ngClass]="{'is-active': isMenu()}">
+            <div class="navbar-start">
+                <a class="navbar-item">
+                    Home
+                </a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<div class="container" style="margin-top: 1em;">
+    <div class="has-text-centered" style="margin-bottom: 1em;">
+        <button class="button is-primary" (click)="registrarPonto()" [disabled]="isCarregando()" [ngClass]="{'is-loading': isCarregando()}">
+            Registrar ponto
+        </button>
+    </div>
+
+    <div class="columns">
+        <div class="column is-4">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-header-title">
+                        Horas extras
+                    </div>
+                </div>
+
+                <div class="card-content has-text-centered" >
+                    <div *ngIf="isCarregandoPagina()">
+                        <div class="skeleton-line-grande centro-margin"></div>
+                    </div>
+
+                    <div *ngIf="!isCarregandoPagina()">
+                        <div class="horas-extras" [ngClass]="{'vermelho': horas.horas_extras < 0, 'verde': horas.horas_extras > 0}">
+                            {{util.converterHoras(horas.horas_extras)}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="column is-8">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-header-title">
+                        Histórico
+                    </div>
+                </div>
+
+                <div class="card-content">
+                    <div class="columns is-vcentered is-mobile" *ngIf="isCarregandoPagina()">
+                        <div class="column is-4">
+                            <div class="skeleton-avatar centro-margin"></div>
+                        </div>
+
+                        <div class="column is-8">
+                            <div class="skeleton-line centro-margin"></div>
+                            <div class="skeleton-line-pequeno centro-margin" style="margin-top: 0.7em;"></div>
+                        </div>
+                    </div>
+
+                    <div class="columns is-vcentered is-mobile" *ngFor="let jornada of historico | orderByImpure: '-inicio'">
+                        <div class="column is-4">
+                            <div class="has-text-centered">
+                                <span class="dia-historico">{{jornada.competencia | date: 'dd'}}</span>
+
+                                <div>
+                                    {{jornada.competencia | date: 'MMMM'}}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="column is-8">
+                            <div class="has-text-centered">
+                                {{jornada.inicio | date: 'HH:mm'}} - 
+                                <span *ngIf="jornada.fim != null">{{jornada.fim | date: 'HH:mm'}}</span>
+                                <span *ngIf="jornada.fim == null">Em progresso</span>
+                                <div [ngClass]="{'vermelho': jornada.horas < 0}">
+                                    {{util.converterHoras(jornada.horas)}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="has-text-centered" *ngIf="!isCarregandoPagina() && historico.length == 0">
+                        Nenhum registro de ponto
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" [ngClass]="{'is-active': modalAtivo}">
+    <div class="modal-background"></div>
+    <div class="modal-content">
+        <div class="box">
+            <article class="media">
+                <div class="media-content">
+                    <div class="content has-text-centered">
+                        <div>
+                            <img src="assets/images/time-card.png" width="100" />
+                        </div>
+
+                        <p style="font-size: 1.3em;">
+                            Ponto registrado com sucesso!
+                        </p>
+
+                        <div>
+                            <button class="button is-primary" (click)="toggleModal()">
+                                Fechar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </article>
+        </div>
+    </div>
+
+    <button class="modal-close is-large" aria-label="close" (click)="toggleModal()"></button>
+</div>

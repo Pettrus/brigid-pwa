@@ -1,1 +1,83 @@
 /* You can add global styles to this file, and also import other style files */
+body, html {
+    height: 100%;
+}
+
+body {
+    background: #ECF0F3;
+}
+
+.column {
+    padding: 1.1rem !important;
+}
+
+.vermelho {
+    color: red;
+}
+
+.verde {
+    color: green;
+}
+
+.centro-margin {
+    margin-left:auto;
+    margin-right:auto;
+}
+
+.skeleton-avatar {
+    width: 52px;
+    height: 52px;
+    background-color: #ccc;
+    border-radius: 25%;
+    background-image: linear-gradient(90deg, #F4F4F4 0px, rgba(229, 229, 229, 0.8) 40px, #F4F4F4 80px);
+    background-size: 600px;
+    animation: shine-avatar 2s infinite ease-out;
+}
+
+.skeleton-line-pequeno {
+    width: 100px;
+    height: 16px;
+    border-radius: 7px;
+    background-image: linear-gradient(90deg, #F4F4F4 0px, rgba(229, 229, 229, 0.8) 40px, #F4F4F4 80px);
+    background-size: 600px;
+    animation: shine-lines 2s infinite ease-out;
+}
+
+.skeleton-line {
+    width: 140px;
+    height: 16px;
+    border-radius: 7px;
+    background-image: linear-gradient(90deg, #F4F4F4 0px, rgba(229, 229, 229, 0.8) 40px, #F4F4F4 80px);
+    background-size: 600px;
+    animation: shine-lines 2s infinite ease-out;
+}
+
+.skeleton-line-grande {
+    width: 140px;
+    height: 30px;
+    border-radius: 7px;
+    background-image: linear-gradient(90deg, #F4F4F4 0px, rgba(229, 229, 229, 0.8) 40px, #F4F4F4 80px);
+    background-size: 600px;
+    animation: shine-lines 2s infinite ease-out;
+}
+
+.skeleton-line ~ .skeleton-line {
+    background-color: #ddd;
+}
+
+@keyframes shine-lines {
+    0% {
+        background-position: -100px;
+    }
+    40%, 100% {
+        background-position: 140px;
+    }
+    }
+    @keyframes shine-avatar {
+    0% {
+        background-position: -32px;
+    }
+    40%, 100% {
+        background-position: 208px;
+    }
+}
