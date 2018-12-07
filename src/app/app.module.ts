@@ -22,6 +22,7 @@ import { MasterComponent } from './core/master/master.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
+import { Erro404Component } from './layout/erro404/erro404.component';
 
 registerLocaleData(localePt, 'pt-BR');
 
@@ -30,7 +31,8 @@ registerLocaleData(localePt, 'pt-BR');
     AppComponent,
     LoginComponent,
     HomeComponent,
-    MasterComponent
+    MasterComponent,
+    Erro404Component,
   ],
   imports: [
     FormsModule,

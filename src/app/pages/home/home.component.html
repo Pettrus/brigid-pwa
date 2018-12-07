@@ -90,7 +90,7 @@
                                 {{jornada.inicio | date: 'HH:mm'}} - 
                                 <span *ngIf="jornada.fim != null">{{jornada.fim | date: 'HH:mm'}}</span>
                                 <span *ngIf="jornada.fim == null">Em progresso</span>
-                                <div [ngClass]="{'vermelho': jornada.horas < 0}">
+                                <div [ngClass]="{'vermelho': jornada.horas < 0, 'verde': jornada.horas > 0}">
                                     {{util.converterHoras(jornada.horas)}}
                                 </div>
                             </div>

@@ -26,8 +26,6 @@ export class HomeComponent extends MasterComponent implements OnInit {
                 this.api.getRequest("/jornada-trabalho/horas-extras"),
                 this.api.getRequest("/jornada-trabalho/historico")
             ]);
-
-            console.log(this.historico);
         }catch(e) {
             console.log(e);
             this.util.notificacao("Algo não foi como o esperado, tente novamente.", "error");
