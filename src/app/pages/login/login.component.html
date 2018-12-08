@@ -1,33 +1,39 @@
 <section class="hero is-success is-fullheight">
     <div class="hero-body">
         <div class="container has-text-centered">
-            <div style="margin-bottom: -4em;">
-                <img src="/assets/images/logo.png" />
+            <div class="columns">
+                <div class="column is-5 is-offset-3">
+                    <div style="margin-bottom: -5em;">
+                        <img src="/assets/images/logo.png" class="image" />
+                    </div>
+                </div>
             </div>
 
-            <div class="column is-4 is-offset-4">
-                <div class="box">
-                    <form (ngSubmit)="login()">
-                        <div class="field">
-                            <div class="control">
-                                <input class="input is-large" type="email" placeholder="Email" [(ngModel)]="email" name="email" autofocus>
+            <div class="columns">
+                <div class="column is-5 is-offset-3">
+                    <div class="box">
+                        <form (ngSubmit)="login()">
+                            <div class="field">
+                                <div class="control">
+                                    <input class="input is-large" type="email" placeholder="Email" [(ngModel)]="email" name="email" autofocus>
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="field">
-                            <div class="control">
-                                <input class="input is-large" type="password" placeholder="Senha" [(ngModel)]="password" name="password">
+                            <div class="field">
+                                <div class="control">
+                                    <input class="input is-large" type="password" placeholder="Senha" [(ngModel)]="password" name="password">
+                                </div>
                             </div>
-                        </div>
 
-                        <button class="button is-block is-primary is-large is-fullwidth"
-                            [ngClass]="{'is-loading': carregando}" [disabled]="carregando">Login</button>
-                    </form>
+                            <button class="button is-block is-primary is-large is-fullwidth"
+                                [ngClass]="{'is-loading': carregando}" [disabled]="carregando">Login</button>
+                        </form>
+                    </div>
+                    <p class="has-text-grey">
+                        <a (click)="toggleModal()">Cadastrar-se</a> <!--&nbsp;·&nbsp;-->
+                        <!--<a href="../">Esqueci a senha</a>-->
+                    </p>
                 </div>
-                <p class="has-text-grey">
-                    <a (click)="toggleModal()">Cadastrar-se</a> <!--&nbsp;·&nbsp;-->
-                    <!--<a href="../">Esqueci a senha</a>-->
-                </p>
             </div>
         </div>
     </div>

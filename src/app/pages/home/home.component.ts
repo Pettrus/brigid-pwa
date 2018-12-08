@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ApiService } from '../../services/api.service';
 import { Globals } from '../../services/globals';
 import { UtilService } from '../../services/util.service';
@@ -9,11 +9,15 @@ import { MasterComponent } from '../../core/master/master.component';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
 })
-export class HomeComponent extends MasterComponent implements OnInit {
+export class HomeComponent extends MasterComponent implements OnInit, OnDestroy {
     public horas: any = {};
     public historico: any = [];
 
     public modalAtivo: boolean = false;
+
+    public interval: any = null;
+
+    public tempoTrabalho: string = null;
 
     constructor(private api: ApiService, private util: UtilService, private globals: Globals) {
         super()
@@ -26,11 +30,22 @@ export class HomeComponent extends MasterComponent implements OnInit {
                 this.api.getRequest("/jornada-trabalho/horas-extras"),
                 this.api.getRequest("/jornada-trabalho/historico")
             ]);
+
+            if(this.historico.some(item => item.fim == null)) {
+                const i = this.historico.findIndex(el => el.fim == null);
+                this.contarTempo(this.historico[i]);
+            }
         }catch(e) {
             console.log(e);
-            this.util.notificacao("Algo não foi como o esperado, tente novamente.", "error");
+            this.util.notificacao(null, "error");
         }finally {
             this.carregandoPagina = false;
+        }
+    }
+
+    ngOnDestroy() {
+        if(this.interval) {
+            clearInterval(this.interval);
         }
     }
 
@@ -49,6 +64,8 @@ export class HomeComponent extends MasterComponent implements OnInit {
                     const i = this.historico.findIndex(el => el.id == jornada.id);
                     this.historico[i] = jornada;
                     this.horas.horas_extras = this.horas.horas_extras + jornada.horas;
+
+                    clearInterval(this.interval);
                 }else {
                     this.historico.push(jornada);
                 }
@@ -59,7 +76,7 @@ export class HomeComponent extends MasterComponent implements OnInit {
             this.toggleModal();
         }catch(e) {
             console.log(e);
-            this.util.notificacao("Algo não ocorreu como o esperado, tente novamente.", "error");
+            this.util.notificacao(null, "error");
         }finally {
             this.carregando = false;
         }
@@ -74,6 +91,8 @@ export class HomeComponent extends MasterComponent implements OnInit {
             ponto.competencia = new Date().toISOString();
             ponto.inicio = new Date().toISOString();
             this.historico.push(ponto);
+
+            clearInterval(this.interval);
         }else {
             this.historico[i].fim = new Date().toISOString();
             ponto = this.historico[i];
@@ -87,5 +106,31 @@ export class HomeComponent extends MasterComponent implements OnInit {
 
         listaPontos.push(ponto);
         localStorage.setItem("pontos", JSON.stringify(listaPontos));
+    }
+
+    async sair() {
+        try {
+            await this.api.sair();
+
+            this.util.redirectiona("/login");
+        }catch(e) {
+            console.log(e);
+            this.util.notificacao("Não foi possível deslogar", "error");
+        }
+    }
+
+    contarTempo(jornada) {
+        this.interval = setInterval(() => {
+            const inicio = new Date(jornada.inicio).getTime();
+            const now = new Date().getTime();
+      
+            let distance = now - inicio;
+            
+            let hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            let seconds = Math.floor((distance % (1000 * 60)) / 1000);
+          
+            this.tempoTrabalho = (hours == 0 ? "" : hours + "H ") + minutes + "M " + seconds + "s";
+        }, 1000);
     }
 }

@@ -26,6 +26,10 @@ export class ApiService {
       password: password
     }).toPromise();
   }
+
+  sair(): Promise<any> {
+    return this.tokenService.signOut().toPromise();
+  }
   
   usuarioLogado(): boolean {
     return this.tokenService.userSignedIn();

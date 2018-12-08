@@ -13,7 +13,7 @@ export class UtilService {
     this.router.navigate([caminho]);
   }
 
-  notificacao(mensagem: string, tipo?: string): void {
+  notificacao(mensagem?: string, tipo?: string): void {
     const config = {
       timeout: 3000,
       showProgressBar: false,
@@ -26,7 +26,7 @@ export class UtilService {
     }else if(tipo == 'warning') {
       this.snotifyService.warning(mensagem, config);
     }else if(tipo == 'error') {
-      this.snotifyService.error(mensagem, config);
+      this.snotifyService.error((mensagem == null ? "Algo não ocorreu como o esperado, tente novamente mais tarde." : mensagem), config);
     }else {
       this.snotifyService.success(mensagem, config);
     }

@@ -1,15 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
-body, html {
-    min-height: 100%;
-    height: 100%;
-}
-
-body {
-    background: #ECF0F3;
-}
-
-.column {
-    padding: 1.1rem !important;
+html {
+    background-color: #ECF0F3 !important;
 }
 
 .vermelho {
