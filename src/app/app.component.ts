@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { SwUpdate } from '@angular/service-worker';
 import { fromEvent, merge, of } from 'rxjs';
 import { mapTo } from 'rxjs/operators';
 import { ApiService } from './services/api.service';
@@ -15,13 +14,7 @@ import { Globals } from './services/globals';
 })
 export class AppComponent {
 
-  private update: boolean = false;
-
-  constructor(private updates: SwUpdate, private api: ApiService, private global: Globals) {
-    updates.available.subscribe(event => {
-      this.update = true;
-    });
-
+  constructor(private api: ApiService, private global: Globals) {
     merge(
       of(navigator.onLine),
       fromEvent(window, 'online').pipe(mapTo(true)),
@@ -31,6 +24,9 @@ export class AppComponent {
 
       if(on) {
         let pontos = JSON.parse(localStorage.getItem("pontos"));
+
+        console.log("Olha os pontos");
+        console.log(pontos);
 
         if(pontos != null) {
           for(let p of pontos) {

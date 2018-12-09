@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  apiURL: 'http://brigid-jkgrw.run.goorm.io'
+  apiURL: 'http://brigid-jkgrw.run.goorm.io',
+  publicKey: ''
 };
 
 /*

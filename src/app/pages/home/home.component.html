@@ -41,76 +41,78 @@
         </button>
     </div>
 
-    <div class="column is-4">
-        <div class="card">
-            <div class="card-header">
-                <div class="card-header-title">
-                    Horas extras
+    <div class="columns" style="margin-left: 0;margin-right: 0;">
+        <div class="column is-4">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-header-title">
+                        Horas extras
+                    </div>
                 </div>
-            </div>
-
-            <div class="card-content has-text-centered" >
-                <div *ngIf="isCarregandoPagina()">
-                    <div class="skeleton-line-grande centro-margin"></div>
-                </div>
-
-                <div *ngIf="!isCarregandoPagina()">
-                    <div class="horas-extras" [ngClass]="{'vermelho': horas.horas_extras < 0, 'verde': horas.horas_extras > 0}">
-                        {{util.converterHoras(horas.horas_extras)}}
+    
+                <div class="card-content has-text-centered" >
+                    <div *ngIf="isCarregandoPagina()">
+                        <div class="skeleton-line-grande centro-margin"></div>
+                    </div>
+    
+                    <div *ngIf="!isCarregandoPagina()">
+                        <div class="horas-extras" [ngClass]="{'vermelho': horas.horas_extras < 0, 'verde': horas.horas_extras > 0}">
+                            {{util.converterHoras(horas.horas_extras)}}
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <div class="column is-8">
-        <div class="card">
-            <div class="card-header">
-                <div class="card-header-title">
-                    Histórico
-                </div>
-            </div>
-
-            <div class="card-content">
-                <div class="columns is-vcentered is-mobile" *ngIf="isCarregandoPagina()">
-                    <div class="column is-4">
-                        <div class="skeleton-avatar centro-margin"></div>
-                    </div>
-
-                    <div class="column is-8">
-                        <div class="skeleton-line centro-margin"></div>
-                        <div class="skeleton-line-pequeno centro-margin" style="margin-top: 0.7em;"></div>
+        <div class="column is-8">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-header-title">
+                        Histórico
                     </div>
                 </div>
 
-                <div class="columns is-vcentered is-mobile" *ngFor="let jornada of historico | orderByImpure: '-inicio'">
-                    <div class="column is-4">
-                        <div class="has-text-centered">
-                            <span class="dia-historico">{{jornada.competencia | date: 'dd'}}</span>
+                <div class="card-content">
+                    <div class="columns is-vcentered is-mobile" *ngIf="isCarregandoPagina()">
+                        <div class="column is-4">
+                            <div class="skeleton-avatar centro-margin"></div>
+                        </div>
 
-                            <div>
-                                {{jornada.competencia | date: 'MMMM'}}
+                        <div class="column is-8">
+                            <div class="skeleton-line centro-margin"></div>
+                            <div class="skeleton-line-pequeno centro-margin" style="margin-top: 0.7em;"></div>
+                        </div>
+                    </div>
+
+                    <div class="columns is-vcentered is-mobile" *ngFor="let jornada of historico | orderByImpure: '-inicio'">
+                        <div class="column is-4">
+                            <div class="has-text-centered">
+                                <span class="dia-historico">{{jornada.competencia | date: 'dd'}}</span>
+
+                                <div>
+                                    {{jornada.competencia | date: 'MMMM'}}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="column is-8">
+                            <div class="has-text-centered">
+                                {{jornada.inicio | date: 'HH:mm'}} - 
+                                <span *ngIf="jornada.fim != null">{{jornada.fim | date: 'HH:mm'}}</span>
+                                <span *ngIf="jornada.fim == null">Em progresso</span>
+                                <div [ngClass]="{'vermelho': jornada.horas < 0, 'verde': jornada.horas > 0}" *ngIf="jornada.fim != null">
+                                    {{util.converterHoras(jornada.horas)}}
+                                </div>
+                                <div *ngIf="jornada.fim == null">
+                                    {{tempoTrabalho}}
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="column is-8">
-                        <div class="has-text-centered">
-                            {{jornada.inicio | date: 'HH:mm'}} - 
-                            <span *ngIf="jornada.fim != null">{{jornada.fim | date: 'HH:mm'}}</span>
-                            <span *ngIf="jornada.fim == null">Em progresso</span>
-                            <div [ngClass]="{'vermelho': jornada.horas < 0, 'verde': jornada.horas > 0}" *ngIf="jornada.fim != null">
-                                {{util.converterHoras(jornada.horas)}}
-                            </div>
-                            <div *ngIf="jornada.fim == null">
-                                {{tempoTrabalho}}
-                            </div>
-                        </div>
+                    <div class="has-text-centered" *ngIf="!isCarregandoPagina() && historico.length == 0">
+                        Nenhum registro de ponto
                     </div>
-                </div>
-
-                <div class="has-text-centered" *ngIf="!isCarregandoPagina() && historico.length == 0">
-                    Nenhum registro de ponto
                 </div>
             </div>
         </div>

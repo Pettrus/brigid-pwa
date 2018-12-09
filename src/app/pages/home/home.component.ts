@@ -3,6 +3,7 @@ import { ApiService } from '../../services/api.service';
 import { Globals } from '../../services/globals';
 import { UtilService } from '../../services/util.service';
 import { MasterComponent } from '../../core/master/master.component';
+import { PushService } from '../../services/push.service';
 
 @Component({
   selector: 'app-home',
@@ -19,7 +20,8 @@ export class HomeComponent extends MasterComponent implements OnInit, OnDestroy 
 
     public tempoTrabalho: string = null;
 
-    constructor(private api: ApiService, private util: UtilService, private globals: Globals) {
+    constructor(private api: ApiService, private util: UtilService, private globals: Globals,
+        private push: PushService) {
         super()
     }
 
@@ -35,6 +37,8 @@ export class HomeComponent extends MasterComponent implements OnInit, OnDestroy 
                 const i = this.historico.findIndex(el => el.fim == null);
                 this.contarTempo(this.historico[i]);
             }
+
+            this.push.inscrever();
         }catch(e) {
             console.log(e);
             this.util.notificacao(null, "error");
@@ -68,6 +72,7 @@ export class HomeComponent extends MasterComponent implements OnInit, OnDestroy 
                     clearInterval(this.interval);
                 }else {
                     this.historico.push(jornada);
+                    this.contarTempo(jornada);
                 }
             }else {
                 this.registrarPontoOffline();
@@ -92,16 +97,24 @@ export class HomeComponent extends MasterComponent implements OnInit, OnDestroy 
             ponto.inicio = new Date().toISOString();
             this.historico.push(ponto);
 
-            clearInterval(this.interval);
+            this.contarTempo(ponto);
         }else {
             this.historico[i].fim = new Date().toISOString();
             ponto = this.historico[i];
+
+            clearInterval(this.interval);
         }
 
         let listaPontos = JSON.parse(localStorage.getItem("pontos"));
 
         if(listaPontos == null) {
             listaPontos = [];
+        }
+
+        const index = listaPontos.findIndex(el => el.fim == null);
+
+        if(index != -1) {
+            listaPontos.splice(index, 1);
         }
 
         listaPontos.push(ponto);
