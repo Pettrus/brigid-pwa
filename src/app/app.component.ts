@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { fromEvent, merge, of } from 'rxjs';
 import { mapTo } from 'rxjs/operators';
 import { ApiService } from './services/api.service';
+import { UtilService } from './services/util.service';
 import { Globals } from './services/globals';
 
 @Component({
@@ -14,7 +15,7 @@ import { Globals } from './services/globals';
 })
 export class AppComponent {
 
-  constructor(private api: ApiService, private global: Globals) {
+  constructor(private api: ApiService, private global: Globals, private util: UtilService) {
     merge(
       of(navigator.onLine),
       fromEvent(window, 'online').pipe(mapTo(true)),
@@ -24,9 +25,6 @@ export class AppComponent {
 
       if(on) {
         let pontos = JSON.parse(localStorage.getItem("pontos"));
-
-        console.log("Olha os pontos");
-        console.log(pontos);
 
         if(pontos != null) {
           for(let p of pontos) {

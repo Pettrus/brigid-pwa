@@ -34,4 +34,8 @@ export class ApiService {
   usuarioLogado(): boolean {
     return this.tokenService.userSignedIn();
   }
+
+  validarToken() {
+    return this.tokenService.validateToken();
+  }
 }

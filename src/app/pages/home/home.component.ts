@@ -60,19 +60,18 @@ export class HomeComponent extends MasterComponent implements OnInit, OnDestroy 
     async registrarPonto() {
         try {
             this.carregando = true;
-            console.log(this.globals.online);
             if(this.globals.online) {
-                const jornada = await this.api.postRequest("/jornada-trabalho/registrar-ponto", {});
+                const dados = await this.api.postRequest("/jornada-trabalho/registrar-ponto", {});
 
-                if(this.historico.some(item => item.id.includes(jornada.id))) {
-                    const i = this.historico.findIndex(el => el.id == jornada.id);
-                    this.historico[i] = jornada;
-                    this.horas.horas_extras = this.horas.horas_extras + jornada.horas;
+                if(this.historico.some(item => item.id.includes(dados.jornada.id))) {
+                    const i = this.historico.findIndex(el => el.id == dados.jornada.id);
+                    this.historico[i] = dados.jornada;
+                    this.horas.horas_extras = dados.horas;
 
                     clearInterval(this.interval);
                 }else {
-                    this.historico.push(jornada);
-                    this.contarTempo(jornada);
+                    this.historico.push(dados.jornada);
+                    this.contarTempo(dados.jornada);
                 }
             }else {
                 this.registrarPontoOffline();
@@ -119,17 +118,6 @@ export class HomeComponent extends MasterComponent implements OnInit, OnDestroy 
 
         listaPontos.push(ponto);
         localStorage.setItem("pontos", JSON.stringify(listaPontos));
-    }
-
-    async sair() {
-        try {
-            await this.api.sair();
-
-            this.util.redirectiona("/login");
-        }catch(e) {
-            console.log(e);
-            this.util.notificacao("Não foi possível deslogar", "error");
-        }
     }
 
     contarTempo(jornada) {

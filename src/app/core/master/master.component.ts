@@ -9,8 +9,6 @@ export class MasterComponent {
 
   constructor() {}
 
-  protected menu: boolean = false;
-
   protected carregandoPagina: boolean = false;
   protected carregando: boolean = false;
 
@@ -20,14 +18,6 @@ export class MasterComponent {
 
   isCarregandoPagina(): boolean {
     return this.carregandoPagina;
-  }
-
-  toggleMenu() {
-    this.menu = !this.menu;
-  }
-
-  isMenu() {
-    return this.menu;
   }
 
   _markFormDirty(form: FormGroup): FormGroup {

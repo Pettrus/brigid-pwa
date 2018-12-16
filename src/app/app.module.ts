@@ -23,6 +23,8 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { Erro404Component } from './layout/erro404/erro404.component';
+import { HeaderComponent } from './layout/header/header.component';
+import { EventosComponent } from './pages/eventos/eventos.component';
 
 registerLocaleData(localePt, 'pt-BR');
 
@@ -33,6 +35,8 @@ registerLocaleData(localePt, 'pt-BR');
     HomeComponent,
     MasterComponent,
     Erro404Component,
+    HeaderComponent,
+    EventosComponent,
   ],
   imports: [
     FormsModule,
@@ -43,7 +47,8 @@ registerLocaleData(localePt, 'pt-BR');
     SnotifyModule,
     NgPipesModule,
     AngularTokenModule.forRoot({
-      apiBase: environment.apiURL
+      apiBase: environment.apiURL,
+      signInRedirect: 'login'
     }),
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],

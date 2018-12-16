@@ -1,0 +1,113 @@
+<app-header></app-header>
+
+<div class="container" style="margin-top: 1em;">
+    <div class="has-text-centered" style="margin-bottom: 1em;">
+        <button class="button is-info" (click)="toggleModal()" [disabled]="isCarregando()" [ngClass]="{'is-loading': isCarregando()}">
+            Novo evento
+        </button>
+    </div>
+
+    <div class="columns is-centered" style="margin-left: 0;margin-right: 0;">
+        <div class="column is-8">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-header-title">
+                        Eventos
+                    </div>
+                </div>
+
+                <div class="card-content">
+                    <div class="columns is-vcentered is-mobile" *ngIf="isCarregandoPagina()">
+                        <div class="column is-4">
+                            <div class="skeleton-avatar centro-margin"></div>
+                        </div>
+
+                        <div class="column is-8">
+                            <div class="skeleton-line centro-margin"></div>
+                            <div class="skeleton-line-pequeno centro-margin" style="margin-top: 0.7em;"></div>
+                        </div>
+                    </div>
+
+                    <div class="columns is-vcentered is-mobile" *ngFor="let evento of listaEventos | orderByImpure: '-comptencia'">
+                        <div class="column is-4">
+                            <div class="has-text-centered">
+                                <span class="dia-historico">{{evento.competencia | date: 'dd'}}</span>
+
+                                <div>
+                                    {{evento.competencia | date: 'MMMM'}}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="column is-8">
+                            <div class="has-text-centered">
+                                {{evento.nome}}
+
+                                <div [ngClass]="{'vermelho': evento.horas < 0, 'verde': evento.horas > 0}">
+                                    {{util.converterHoras(evento.horas)}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="has-text-centered" *ngIf="!isCarregandoPagina() && listaEventos.length == 0">
+                        Nenhum evento registrado
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" [ngClass]="{'is-active': modal}">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+        <header class="modal-card-head">
+            <p class="modal-card-title">Cadastro</p>
+            <button type="button" class="delete" aria-label="close" (click)="toggleModal()" [disabled]="carregando"></button>
+        </header>
+
+        <form [formGroup]="form" (ngSubmit)="salvar()" novalidate>
+            <section class="modal-card-body">
+                <div class="field">
+                    <label class="label">Nome</label>
+                    <div class="control">
+                        <input class="input" type="text" maxlength="120" [(ngModel)]="evento.nome" formControlName="nome">
+                    </div>
+                    <p class="help is-danger" 
+                        *ngIf="form.controls.nome.invalid && (form.controls.nome.dirty || form.controls.nome.touched)">
+                        Nome inválido
+                    </p>
+                </div>
+
+                <div class="field">
+                    <label class="label">Competência</label>
+                    <div class="control">
+                        <input class="input" type="date" [(ngModel)]="evento.competencia" formControlName="competencia">
+                    </div>
+
+                    <p class="help is-danger" 
+                        *ngIf="form.controls.competencia.invalid && (form.controls.competencia.dirty || form.controls.competencia.touched)">
+                        Competência inválida
+                    </p>
+                </div>
+
+                <div class="field">
+                    <label class="label">Competência</label>
+                    <div class="control">
+                        <input class="input" type="number" [(ngModel)]="evento.horas" formControlName="horas">
+                    </div>
+
+                    <p class="help is-danger" 
+                        *ngIf="form.controls.horas.invalid && (form.controls.horas.dirty || form.controls.horas.touched)">
+                        Horas inválida
+                    </p>
+                </div>
+            </section>
+            <footer class="modal-card-foot">
+                <button class="button is-success" [disabled]="carregando" [ngClass]="{'is-loading': carregando}">Salvar</button>
+                <button class="button" type="button" (click)="toggleModal()" [disabled]="carregando">Fechar</button>
+            </footer>
+        </form>
+    </div>
+</div>
