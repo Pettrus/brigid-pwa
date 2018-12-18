@@ -64,7 +64,7 @@
     <div class="modal-card">
         <header class="modal-card-head">
             <p class="modal-card-title">Cadastro</p>
-            <button type="button" class="delete" aria-label="close" (click)="toggleModal()" [disabled]="carregando"></button>
+            <button type="button" class="delete" aria-label="close" (click)="toggleModal()" [disabled]="isCarregando()"></button>
         </header>
 
         <form [formGroup]="form" (ngSubmit)="salvar()" novalidate>
@@ -93,7 +93,7 @@
                 </div>
 
                 <div class="field">
-                    <label class="label">Competência</label>
+                    <label class="label">Quantidade de horas</label>
                     <div class="control">
                         <input class="input" type="number" [(ngModel)]="evento.horas" formControlName="horas">
                     </div>
@@ -105,8 +105,8 @@
                 </div>
             </section>
             <footer class="modal-card-foot">
-                <button class="button is-success" [disabled]="carregando" [ngClass]="{'is-loading': carregando}">Salvar</button>
-                <button class="button" type="button" (click)="toggleModal()" [disabled]="carregando">Fechar</button>
+                <button class="button is-success" [disabled]="isCarregando()" [ngClass]="{'is-loading': isCarregando()}">Salvar</button>
+                <button class="button" type="button" (click)="toggleModal()" [disabled]="isCarregando()">Fechar</button>
             </footer>
         </form>
     </div>

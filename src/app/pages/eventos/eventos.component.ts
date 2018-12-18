@@ -12,8 +12,8 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 })
 export class EventosComponent extends MasterComponent implements OnInit {
 
-    public listaEventos = [];
-    public evento = {};
+    public listaEventos: any = [];
+    public evento: any = {};
     public modal: boolean = false;
 
     public form: FormGroup;
