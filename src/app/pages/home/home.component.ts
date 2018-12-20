@@ -30,7 +30,7 @@ export class HomeComponent extends MasterComponent implements OnInit, OnDestroy 
             this.carregandoPagina = true;
             [this.horas, this.historico] = await Promise.all([
                 this.api.getRequest("/jornada-trabalho/horas-extras"),
-                this.api.getRequest("/jornada-trabalho/historico")
+                this.api.getRequest("/jornada-trabalho")
             ]);
 
             if(this.historico.some(item => item.fim == null)) {
@@ -61,7 +61,7 @@ export class HomeComponent extends MasterComponent implements OnInit, OnDestroy 
         try {
             this.carregando = true;
             if(this.globals.online) {
-                const dados = await this.api.postRequest("/jornada-trabalho/registrar-ponto", {});
+                const dados = await this.api.postRequest("/jornada-trabalho", {});
 
                 if(this.historico.some(item => item.id.includes(dados.jornada.id))) {
                     const i = this.historico.findIndex(el => el.id == dados.jornada.id);
@@ -74,7 +74,7 @@ export class HomeComponent extends MasterComponent implements OnInit, OnDestroy 
                     this.contarTempo(dados.jornada);
                 }
             }else {
-                this.registrarPontoOffline();
+                this.util.notificacao("Você não esta conectad a internet", "info");
             }
 
             this.toggleModal();
@@ -84,40 +84,6 @@ export class HomeComponent extends MasterComponent implements OnInit, OnDestroy 
         }finally {
             this.carregando = false;
         }
-    }
-
-    private registrarPontoOffline() {
-        const i = this.historico.findIndex(el => el.fim == null);
-        let ponto = null;
-
-        if(i == -1) {
-            ponto = {};
-            ponto.competencia = new Date().toISOString();
-            ponto.inicio = new Date().toISOString();
-            this.historico.push(ponto);
-
-            this.contarTempo(ponto);
-        }else {
-            this.historico[i].fim = new Date().toISOString();
-            ponto = this.historico[i];
-
-            clearInterval(this.interval);
-        }
-
-        let listaPontos = JSON.parse(localStorage.getItem("pontos"));
-
-        if(listaPontos == null) {
-            listaPontos = [];
-        }
-
-        const index = listaPontos.findIndex(el => el.fim == null);
-
-        if(index != -1) {
-            listaPontos.splice(index, 1);
-        }
-
-        listaPontos.push(ponto);
-        localStorage.setItem("pontos", JSON.stringify(listaPontos));
     }
 
     contarTempo(jornada) {

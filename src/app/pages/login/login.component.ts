@@ -37,6 +37,7 @@ export class LoginComponent extends MasterComponent implements OnInit {
     try {
       this.carregando = true;
       await this.api.login(this.email, this.password);
+      console.log("Logou");
 
       this.util.redirectiona("home");
     }catch(e) {

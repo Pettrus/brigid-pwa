@@ -11,12 +11,11 @@ export class LoginActivate implements CanActivate {
         route: ActivatedRouteSnapshot,
         state: RouterStateSnapshot
     ): Observable<boolean>|Promise<boolean>|boolean {
-        return this.api.validarToken().toPromise().then(valido => {
+        if(this.api.usuarioLogado()) {
             this.router.navigate(['home']);
-            
             return false;
-        }, err => {
-            return true;
-        });
+        }
+
+        return true;
     }
 }

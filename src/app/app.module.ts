@@ -48,7 +48,8 @@ registerLocaleData(localePt, 'pt-BR');
     NgPipesModule,
     AngularTokenModule.forRoot({
       apiBase: environment.apiURL,
-      signInRedirect: 'login'
+      signInRedirect: 'login',
+      signOutFailedValidate: true
     }),
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
