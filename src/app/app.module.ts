@@ -25,6 +25,8 @@ import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { Erro404Component } from './layout/erro404/erro404.component';
 import { HeaderComponent } from './layout/header/header.component';
 import { EventosComponent } from './pages/eventos/eventos.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatSnackBarModule } from '@angular/material';
 
 registerLocaleData(localePt, 'pt-BR');
 
@@ -51,7 +53,9 @@ registerLocaleData(localePt, 'pt-BR');
       signInRedirect: 'login',
       signOutFailedValidate: true
     }),
-    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
+    BrowserAnimationsModule,
+    MatSnackBarModule
   ],
   providers: [
     AngularTokenModule,

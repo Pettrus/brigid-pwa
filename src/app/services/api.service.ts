@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { AngularTokenService } from 'angular-token';
 import { HttpClient } from '@angular/common/http';
+import { SnotifyService } from 'ng-snotify';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,7 @@ export class ApiService {
 
   public URLBASE: string = environment.apiURL;
 
-  constructor(private tokenService: AngularTokenService, private http: HttpClient) {}
+  constructor(private tokenService: AngularTokenService, private http: HttpClient, private snotifyService: SnotifyService) {}
 
   getRequest(url: string): Promise<any> {
     return this.http.get(this.URLBASE + url).toPromise();
@@ -37,5 +38,20 @@ export class ApiService {
 
   validarToken() {
     return this.tokenService.validateToken();
+  }
+
+  cuidarErro(e): void {
+    const config = {
+      timeout: 3000,
+      showProgressBar: false,
+      pauseOnHover: true,
+      position: 'rightTop'
+    };
+
+    if(e.error instanceof Array) {
+      this.snotifyService.error(e.error[0], config);
+    }else {
+      this.snotifyService.error("Algo não ocorreu como o esperado, tente novamente mais tarde.", config);
+    }
   }
 }

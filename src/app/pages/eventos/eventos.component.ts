@@ -13,7 +13,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 export class EventosComponent extends MasterComponent implements OnInit {
 
     public listaEventos: any = [];
-    public evento: any = {};
+    public evento: any = {tipo: 1};
     public modal: boolean = false;
 
     public form: FormGroup;
@@ -28,6 +28,7 @@ export class EventosComponent extends MasterComponent implements OnInit {
                 'nome': ['', [Validators.required, Validators.minLength(2), Validators.maxLength(120)]],
                 'competencia': ['', [Validators.required]],
                 'horas': ['', [Validators.required]],
+                'tipo': ['', [Validators.required]],
             });
             this.carregandoPagina = true;
             this.listaEventos = await this.api.getRequest("/eventos");
@@ -40,6 +41,11 @@ export class EventosComponent extends MasterComponent implements OnInit {
 
     async salvar() {
         try {
+            if (!this.form.valid) {
+                this.form = this._markFormDirty(this.form);
+                return;
+            }
+
             this.carregando = true;
             const evento = await this.api.postRequest("/eventos/", {
                 evento: this.evento
@@ -48,14 +54,20 @@ export class EventosComponent extends MasterComponent implements OnInit {
             this.listaEventos.push(evento);
             this.evento = {};
             this.util.notificacao("Evento salvo com sucesso!");
+            this.toggleModal();
         }catch(e) {
-            this.util.notificacao(null, "error");
+            console.log(e);
+            this.api.cuidarErro(e);
         }finally {
             this.carregando = false;
         }
     }
 
     toggleModal() {
+        if(!this.modal) {
+            this.evento = {tipo: 1};
+            this.form = this._markFormPristine(this.form);
+        }
         this.modal = !this.modal;
     }
 }

@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { fromEvent, merge, of } from 'rxjs';
 import { mapTo } from 'rxjs/operators';
-import { ApiService } from './services/api.service';
-import { UtilService } from './services/util.service';
 import { Globals } from './services/globals';
+import { SwUpdate } from '@angular/service-worker';
+import { MatSnackBar } from '@angular/material';
 
 @Component({
   selector: 'app-root',
@@ -15,7 +15,16 @@ import { Globals } from './services/globals';
 })
 export class AppComponent {
 
-  constructor(private api: ApiService, private global: Globals, private util: UtilService) {
+  private snackB: any = null;
+
+  constructor(private global: Globals, private update: SwUpdate, private snackBar: MatSnackBar) {
+    update.available.subscribe(update => {
+      const atualizar = snackBar.open("Nova versão do app disponível", "Atualizar");
+      atualizar.onAction().subscribe(() => {
+        window.location.reload();
+      });
+    });
+
     merge(
       of(navigator.onLine),
       fromEvent(window, 'online').pipe(mapTo(true)),
@@ -23,18 +32,10 @@ export class AppComponent {
     ).subscribe(on => {
       this.global.online = on;
 
-      if(on) {
-        let pontos = JSON.parse(localStorage.getItem("pontos"));
-
-        if(pontos != null) {
-          for(let p of pontos) {
-            this.api.postRequest("/jornada-trabalho/sincronizar", {
-              jornada: p
-            });
-          }
-
-          localStorage.setItem("pontos", null);
-        }
+      if(!on) {
+        this.snackB = snackBar.open("Você está offline");
+      }else if(this.snackB != null) {
+        this.snackB.dismiss();
       }
     });
   }

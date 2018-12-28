@@ -93,6 +93,20 @@
                 </div>
 
                 <div class="field">
+                    <div class="control">
+                        <label class="radio">
+                            <input type="radio" [(ngModel)]="evento.tipo" formControlName="tipo" [value]="1" />
+                            Positivo
+                        </label>
+
+                        <label class="radio">
+                            <input type="radio" [(ngModel)]="evento.tipo" formControlName="tipo" [value]="-1" />
+                            Negativo
+                        </label>
+                    </div>
+                </div>
+
+                <div class="field">
                     <label class="label">Quantidade de horas</label>
                     <div class="control">
                         <input class="input" type="number" [(ngModel)]="evento.horas" formControlName="horas">

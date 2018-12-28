@@ -37,7 +37,6 @@ export class LoginComponent extends MasterComponent implements OnInit {
     try {
       this.carregando = true;
       await this.api.login(this.email, this.password);
-      console.log("Logou");
 
       this.util.redirectiona("home");
     }catch(e) {
@@ -66,14 +65,17 @@ export class LoginComponent extends MasterComponent implements OnInit {
         this.toggleModal();
       }
     }catch(e) {
-      console.log(e);
-      this.util.notificacao("Algo não ocorreu como o esperado, tente novamente.", "error");
+      this.api.cuidarErro(e);
     }finally {
       this.carregando = false;
     }
   }
 
   toggleModal() {
+    if(!this.modal) {
+      this.usuario = {};
+      this.form = this._markFormPristine(this.form);
+    }
     this.modal = !this.modal;
   }
 }

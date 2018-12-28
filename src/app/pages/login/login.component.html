@@ -54,8 +54,7 @@
                     <div class="control">
                         <input class="input" type="text" maxlength="120" [(ngModel)]="usuario.nome" formControlName="nome">
                     </div>
-                    <p class="help is-danger" 
-                        *ngIf="form.controls.nome.invalid && (form.controls.nome.dirty || form.controls.nome.touched)">
+                    <p class="help is-danger" *ngIf="form.controls.nome.invalid && (form.controls.nome.dirty || form.controls.nome.touched)">
                         Nome inválido
                     </p>
                 </div>
@@ -68,7 +67,7 @@
 
                     <p class="help is-danger" 
                         *ngIf="form.controls.email.invalid && (form.controls.email.dirty || form.controls.email.touched)">
-                        Nome inválido
+                        Email inválido
                     </p>
                 </div>
 
