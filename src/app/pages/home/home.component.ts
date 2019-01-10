@@ -33,8 +33,12 @@ export class HomeComponent extends MasterComponent implements OnInit, OnDestroy 
                 this.api.getRequest("/jornada-trabalho")
             ]);
 
-            if(this.historico.some(item => item.fim == null)) {
-                const i = this.historico.findIndex(el => el.fim == null);
+            if(this.historico.some(item => item.fim == null && this.util.getHoje() == item.competencia)) {
+                const i = this.historico.findIndex(el => el.fim == null && this.util.getHoje() == el.competencia);
+
+                console.log(this.util.getHoje());
+                console.log(this.historico[i].competencia);
+
                 this.contarTempo(this.historico[i]);
             }
 
@@ -74,7 +78,7 @@ export class HomeComponent extends MasterComponent implements OnInit, OnDestroy 
                     this.contarTempo(dados.jornada);
                 }
             }else {
-                this.util.notificacao("Você não esta conectad a internet", "info");
+                this.util.notificacao("Você não esta conectado a internet", "info");
             }
 
             this.toggleModal();

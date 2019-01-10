@@ -40,4 +40,11 @@ export class UtilService {
 
     return parseInt(horas.toString()) + "H " + parseInt(minutos.toString()) + "M";
   }
+
+  getHoje(): string {
+    const data = new Date();
+    const mes = (data.getMonth() + 1);
+    const dia = data.getDate();
+    return data.getFullYear() + "-" + (mes < 10 ? "0" + mes : mes) + "-" + (dia < 10 ? "0" + dia : dia);
+  }
 }

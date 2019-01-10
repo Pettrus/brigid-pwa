@@ -65,11 +65,14 @@
                             <div class="has-text-centered">
                                 {{jornada.inicio | date: 'HH:mm'}} - 
                                 <span *ngIf="jornada.fim != null">{{jornada.fim | date: 'HH:mm'}}</span>
-                                <span *ngIf="jornada.fim == null">Em progresso</span>
+                                <span *ngIf="jornada.fim == null && jornada.competencia == util.getHoje()">Em progresso</span>
+                                <span *ngIf="jornada.fim == null && jornada.competencia != util.getHoje()" class="vermelho">
+                                    Não registrou saída
+                                </span>
                                 <div [ngClass]="{'vermelho': jornada.horas < 0, 'verde': jornada.horas > 0}" *ngIf="jornada.fim != null">
                                     {{util.converterHoras(jornada.horas)}}
                                 </div>
-                                <div *ngIf="jornada.fim == null">
+                                <div *ngIf="jornada.fim == null && jornada.competencia == util.getHoje()">
                                     {{tempoTrabalho}}
                                 </div>
                             </div>
