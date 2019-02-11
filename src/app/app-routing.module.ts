@@ -11,8 +11,8 @@ import { AngularTokenService } from 'angular-token';
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent, canActivate: [ LoginActivate ] },
-  { path: 'home', component: HomeComponent, canActivate: [ AngularTokenService ]},
-  { path: 'eventos', component: EventosComponent, canActivate: [ AngularTokenService ] },
+  { path: 'home', component: HomeComponent, canActivate: [ AuthGuardService ]},
+  { path: 'eventos', component: EventosComponent, canActivate: [ AuthGuardService ] },
 
   { path: '404', component: Erro404Component },
 

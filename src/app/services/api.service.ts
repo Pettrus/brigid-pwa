@@ -36,8 +36,13 @@ export class ApiService {
     return this.tokenService.userSignedIn();
   }
 
-  validarToken() {
-    return this.tokenService.validateToken();
+  tokenValido(): boolean {
+    if (localStorage.getItem("expiry") === undefined) return false;
+    const date = new Date(0);
+    date.setUTCSeconds(+localStorage.getItem("expiry"));
+    
+    if (date === undefined) return false;
+    return date.valueOf() > new Date().valueOf();
   }
 
   cuidarErro(e): void {

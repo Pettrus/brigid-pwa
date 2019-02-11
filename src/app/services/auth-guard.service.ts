@@ -11,12 +11,12 @@ export class AuthGuardService implements CanActivate {
         route: ActivatedRouteSnapshot,
         state: RouterStateSnapshot
     ): Observable<boolean>|Promise<boolean>|boolean {
-        return this.api.validarToken().toPromise().then(valido => {
-            return true;
-        }, err => {
+        if(!this.api.tokenValido() || !this.api.usuarioLogado()) {
             this.router.navigate(['login']);
-            
+
             return false;
-        });
+        }
+
+        return true;
     }
 }
